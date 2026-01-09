@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 Eloşum Doğmuş!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('background.jpg') center/cover no-repeat;
+            min-height: 100vh;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            padding-left: 5%;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            width: 400px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: 20px 0;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        .input-section {
+            margin: 30px 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .photo-upload-btn {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.3);
+            color: #333;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: transform 0.3s;
+            font-weight: normal;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .photo-upload-btn:active {
+            transform: scale(0.95);
+        }
+
+        .photo-thumbnails {
+            display: none;
+        }
+
+        .thumbnail {
+            display: none;
+        }
+
+        .photo-gallery {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin: 20px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        .music-player {
+            margin: 20px auto;
+            display: none;
+        }
+
+        .music-player audio {
+            display: none;
+        }
+
+        .photo-gallery {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 20px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .gallery-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .gallery-photo.active {
+            opacity: 1;
+        }
+
+        .photo-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            text-align: center;
+            max-width: 90%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: 10;
+            font-weight: 500;
+        }
+
+        .photo-caption.active {
+            opacity: 1;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: #764ba2;
+            transform: scale(1.02);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .celebration {
+            display: none;
+            animation: fadeIn 1s;
+        }
+
+        .celebration.active {
+            display: block;
+        }
+
+        .celebration h2 {
+            font-size: 3em;
+            color: #ff6b6b;
+            margin: 20px 0;
+            animation: rainbow 3s infinite, pulse 0.8s infinite;
+        }
+
+        .message {
+            font-size: 1.3em;
+            color: #333;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .emoji-rain {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 30px;
+            animation: fall linear infinite;
+            opacity: 0;
+        }
+
+        .balloon {
+            position: absolute;
+            font-size: 60px;
+            animation: float 4s ease-in-out infinite;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: red;
+            animation: confettiFall 3s linear infinite;
+            z-index: 15;
+        }
+
+        .cake {
+            font-size: 100px;
+            margin: 20px 0;
+            animation: spin 3s infinite;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            margin-top: 20px;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .show-photos-btn {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 18px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes rainbow {
+            0% { color: #ff6b6b; }
+            20% { color: #feca57; }
+            40% { color: #48dbfb; }
+            60% { color: #ff9ff3; }
+            80% { color: #54a0ff; }
+            100% { color: #ff6b6b; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes fall {
+            0% {
+                top: -10%;
+                opacity: 1;
+            }
+            100% {
+                top: 110%;
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-50px) rotate(10deg);
+            }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                top: -10%;
+                transform: rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                top: 110%;
+                transform: rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes spin {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .celebration h2 {
+                font-size: 2.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="emoji-rain" id="emojiRain"></div>
+    
+    <div class="container">
+        <div class="input-section" id="inputSection">
+            <h1>🎂🎈</h1>
+            <input type="text" id="nameInput" placeholder="İsim girin..." />
+            
+            <button onclick="celebrate()">🎉 Kutla!</button>
+        </div>
+
+        <div class="celebration" id="celebration">
+            <div class="cake">🎂</div>
+            <h2 id="celebrationText"></h2>
+            
+            <div class="music-player" id="musicPlayerContainer">
+                <audio id="musicPlayer" loop>
+                    <source src="music.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <div class="message">
+                <p>💖 SEN BİLMEZSİN kalbimdeki değerini...</p>
+                <p>✨ Bendeki seni...</p>
+                <p>🎈 Nereye gidersen git benden kurtulamayacağını...</p>
+                <p>🌟 Gelecekteki her hayalimde o resimde olduğunu...</p>
+                <p>🎉 Ve iyi ki doğduğunu... iyi ki var olduğunu</p>
+            </div>
+            
+            <div class="photo-gallery" id="photoGallery">
+                <img src="photo1.jpg" class="gallery-photo active" />
+                <div class="photo-caption active">sizinle içilen kahvenin 40tan fazla hatrı var</div>
+                
+                <img src="photo2.jpg" class="gallery-photo" />
+                <div class="photo-caption">o da benim şekerim</div>
+                
+                <img src="photo3.jpg" class="gallery-photo" />
+                <div class="photo-caption">okulun ilk gününde bile yalnız bırakmayan siz</div>
+                
+                <img src="photo4.jpg" class="gallery-photo" />
+                <div class="photo-caption">terapi olan günlerimizden sadece birisi</div>
+                
+                <img src="photo5.jpg" class="gallery-photo" />
+                <div class="photo-caption">bahçemde açan en güzel çiçek</div>
+                
+                <img src="photo8.jpg" class="gallery-photo" />
+                <div class="photo-caption">:)</div>
+                
+                <img src="photo9.jpg" class="gallery-photo" />
+                <div class="photo-caption">on ocakta doğdun diye on numara mısın bilmem ama bence hep bir numarasın</div>
+                
+                <img src="photo7.jpg" class="gallery-photo" />
+                <div class="photo-caption">küçük kızımmm</div>
+                
+                <img src="photo12.jpg" class="gallery-photo" />
+                <div class="photo-caption">o benim süslü çiçeğim</div>
+                
+                <img src="photo6.jpg" class="gallery-photo" />
+                <div class="photo-caption">bir dilek tutun</div>
+                
+                <img src="photo10.jpg" class="gallery-photo" />
+                <div class="photo-caption">elaaa doğmuş</div>
+                
+                <img src="photo11.jpg" class="gallery-photo" />
+                <div class="photo-caption">iyi ki doğmuş</div>
+            </div>
+            
+            <button class="reset-btn" onclick="reset()">🔄 Yeni Kutlama</button>
+        </div>
+    </div>
+
+    <script>
+        const emojis = ['🎈', '🎉', '🎊', '🎁', '🎂', '🥳', '✨', '🌟', '💖', '🎵'];
+        const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#00d2d3'];
+        let currentPhotoIndex = 0;
+        let slideshowInterval;
+
+        function startSlideshow() {
+            const photos = document.querySelectorAll('.gallery-photo');
+            const captions = document.querySelectorAll('.photo-caption');
+            if (photos.length === 0) return;
+            
+            slideshowInterval = setInterval(() => {
+                photos[currentPhotoIndex].classList.remove('active');
+                captions[currentPhotoIndex].classList.remove('active');
+                currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+                photos[currentPhotoIndex].classList.add('active');
+                captions[currentPhotoIndex].classList.add('active');
+            }, 3000); // Her 3 saniyede bir değişir
+        }
+        
+        function celebrate() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (!name) {
+                alert('Lütfen bir isim girin! 😊');
+                return;
+            }
+
+            document.getElementById('inputSection').style.display = 'none';
+            document.getElementById('celebration').classList.add('active');
+            document.getElementById('celebrationText').textContent = `${name} 🎉`;
+
+            // Müziği başlat
+            const musicPlayer = document.getElementById('musicPlayer');
+            musicPlayer.play().catch(e => console.log('Otomatik müzik çalma engellendi'));
+
+            startSlideshow();
+            createEmojiRain();
+            createBalloons();
+            createConfetti();
+            playSound();
+        }
+
+        function createEmojiRain() {
+            const container = document.getElementById('emojiRain');
+            setInterval(() => {
+                const emoji = document.createElement('div');
+                emoji.className = 'emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = Math.random() * 100 + '%';
+                emoji.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                emoji.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(emoji);
+
+                setTimeout(() => emoji.remove(), 6000);
+            }, 300);
+        }
+
+        function createBalloons() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const balloon = document.createElement('div');
+                    balloon.className = 'balloon';
+                    balloon.textContent = '🎈';
+                    balloon.style.left = Math.random() * 90 + '%';
+                    balloon.style.top = Math.random() * 80 + 10 + '%';
+                    balloon.style.animationDelay = Math.random() * 2 + 's';
+                    balloon.onclick = function() {
+                        this.style.animation = 'none';
+                        this.textContent = '22';
+                        this.style.fontSize = '40px';
+                        this.style.fontWeight = 'bold';
+                        setTimeout(() => this.remove(), 1000);
+                    };
+                    document.body.appendChild(balloon);
+                }, i * 200);
+            }
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.animationDelay = Math.random() + 's';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 50);
+            }
+        }
+
+        function playSound() {
+            // Sesli kutlama için basit bir "ding" sesi simülasyonu
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const notes = [523.25, 587.33, 659.25, 698.46, 783.99];
+            
+            notes.forEach((freq, index) => {
+                setTimeout(() => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = freq;
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                }, index * 200);
+            });
+        }
+
+        function reset() {
+            document.getElementById('inputSection').style.display = 'block';
+            document.getElementById('celebration').classList.remove('active');
+            document.getElementById('nameInput').value = '';
+            document.getElementById('musicPlayer').pause();
+            document.getElementById('musicPlayer').currentTime = 0;
+            
+            // Slideshow'u durdur
+            if (slideshowInterval) {
+                clearInterval(slideshowInterval);
+            }
+            currentPhotoIndex = 0;
+            document.querySelectorAll('.gallery-photo').forEach((p, i) => {
+                p.classList.remove('active');
+                if (i === 0) p.classList.add('active');
+            });
+            document.querySelectorAll('.photo-caption').forEach((c, i) => {
+                c.classList.remove('active');
+                if (i === 0) c.classList.add('active');
+            });
+            
+            // Balonları temizle
+            document.querySelectorAll('.balloon').forEach(b => b.remove());
+        }
+
+        // Enter tuşu ile kutlama
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                celebrate();
+            }
+        });
+    </script>
+</body>
+</html>
